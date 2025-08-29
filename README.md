@@ -106,3 +106,12 @@ SSM Session Manager & SSH-less ops
 - [EC2 instance running](docs/images/ec2-running.png)
 - [GitHub Actions (apply)](docs/images/actions-apply-green.png)
 
+<h2>Demo (Screenshots)</h2>
+<p><a href="docs/images/nginx-landing.png">Nginx landing</a></p>
+<img src="docs/images/nginx-landing.png?raw=1" alt="Nginx landing" width="800">
+
+<p><a href="docs/images/ec2-running.png">EC2 instance running</a></p>
+<img src="docs/images/ec2-running.png?raw=1" alt="EC2 instance running" width="800">
+
+<p><a href="docs/images/actions-apply-green.png">GitHub Actions (apply)</a></p>
+<img src="docs/images/actions-apply-green.png?raw=1" alt="GitHub Actions apply green" width="800">
