@@ -35,9 +35,6 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    # Ejemplos de nombres de Canonical:
-    # ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-x86_64-server-*
-    # ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-arm64-server-*
     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-${local.arch}-server-*"]
   }
 
@@ -64,16 +61,14 @@ resource "aws_security_group" "web_sg" {
     create_before_destroy = true
   }
 
-  # SSH SOLO desde tu IP
   ingress {
     description = "SSH from my IP"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.my_ip_cidr]      # ej: 181.226.x.x/32
+    cidr_blocks = [var.my_ip_cidr]
   }
 
-  # HTTP PÚBLICO (ajusta si quieres restringir)
   ingress {
     description = "HTTP"
     from_port   = 80
@@ -82,7 +77,6 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Salida libre
   egress {
     from_port   = 0
     to_port     = 0
@@ -98,13 +92,12 @@ resource "aws_security_group" "web_sg" {
 ########################################
 resource "aws_instance" "vm" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = var.instance_type         # e.g. "t3.micro" (o "t4g.micro" si usas ARM)
+  instance_type               = var.instance_type
   key_name                    = var.key_pair_name
-  subnet_id                   = data.aws_subnets.default.ids[0]
+  subnet_id                   = sort(data.aws_subnets.default.ids)[0]  # <- estable
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
 
-  # Instala y publica Nginx
   user_data = <<-EOF
     #!/bin/bash
     set -xe
