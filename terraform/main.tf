@@ -65,7 +65,7 @@ resource "aws_security_group" "web_sg" {
 ########################################
 resource "aws_instance" "vm" {
   ami                         = "ami-08c40ec9ead489470" # Ubuntu 22.04 LTS (us-east-1)
-  instance_type               = "t2.micro"
+  instance_type               = var.instance_type 
   key_name                    = var.key_pair_name
   subnet_id                   = data.aws_subnets.default.ids[0]
   associate_public_ip_address = true
