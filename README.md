@@ -109,9 +109,5 @@ SSM Session Manager & SSH-less ops
 ![Pipeline green](./docs/images/actions-apply-green.png)
 
 ### EC2 instance running
-![EC2 running](./docs/images/ec2-running.png)
-
-### Destroy workflow
-![Destroy green](./docs/images/destroy-green.png)
-
+![EC2 running](./docs/images/ec2-running.png))
 
