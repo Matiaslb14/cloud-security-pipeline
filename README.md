@@ -100,14 +100,3 @@ CloudWatch alarms
 
 SSM Session Manager & SSH-less ops
 
-<table>
-  <tr>
-    <td><img src="docs/nginx-landing.png" alt="Nginx landing" width="430"></td>
-    <td><img src="docs/ec2-running.png" alt="EC2 running" width="430"></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center">
-      <img src="docs/actions-apply-green.png" alt="Pipeline green" width="600">
-    </td>
-  </tr>
-</table>
