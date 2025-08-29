@@ -20,32 +20,38 @@ data "aws_subnets" "default" {
 }
 
 ########################################
-# AMI Ubuntu 22.04 (elige x86_64 o arm64 según el tipo)
+# AMI Ubuntu 22.04 (resiliente a nombre)
 ########################################
 locals {
-  # Si el tipo de instancia empieza con t4g. => ARM (Graviton)
+  # ARM si el tipo empieza con t4g., si no x86_64
   is_arm = can(regex("^t4g\\.", var.instance_type))
   arch   = local.is_arm ? "arm64" : "x86_64"
 }
 
-# Canonical (Ubuntu) owner ID: 099720109477
+# Canonical: 099720109477
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"]
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-${local.arch}-server-*"]
+    # evita meter la arquitectura en el nombre; la filtramos abajo
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-*-server-*"]
   }
 
   filter {
     name   = "architecture"
-    values = [local.arch]
+    values = [local.arch]        # "x86_64" o "arm64"
   }
 
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 }
 
@@ -57,9 +63,7 @@ resource "aws_security_group" "web_sg" {
   description = "SSH from my IP, HTTP from all"
   vpc_id      = data.aws_vpc.default.id
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  lifecycle { create_before_destroy = true }
 
   ingress {
     description = "SSH from my IP"
@@ -94,7 +98,7 @@ resource "aws_instance" "vm" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
   key_name                    = var.key_pair_name
-  subnet_id                   = sort(data.aws_subnets.default.ids)[0]  # <- estable
+  subnet_id                   = data.aws_subnets.default.ids[0]
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
 
