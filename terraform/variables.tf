@@ -21,8 +21,15 @@ variable "key_pair_name" {
   type        = string
 }
 
-# Correo electrónico que recibirá alertas de CloudWatch
+# Correo electrónico que recibirá alertas de CloudWatch (si lo necesitas más adelante)
 variable "alarm_email" {
   description = "Email para recibir alertas de CloudWatch"
   type        = string
+}
+
+# Tipo de instancia (t3.micro suele ser free tier en cuentas nuevas)
+variable "instance_type" {
+  description = "Tipo de instancia EC2 a lanzar"
+  type        = string
+  default     = "t3.micro"
 }
