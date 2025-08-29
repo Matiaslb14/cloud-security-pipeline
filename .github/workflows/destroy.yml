@@ -4,22 +4,33 @@ on:
   workflow_dispatch:
     inputs:
       confirm:
-        description: "Escribe DESTROY para confirmar la eliminación"
+        description: "Escribe DESTROY para confirmar"
         required: true
         default: "DESTROY"
-
-# Unificado con apply
-concurrency:
-  group: terraform
-  cancel-in-progress: true
 
 jobs:
   destroy:
     runs-on: ubuntu-latest
-
+    concurrency: terraform
     defaults:
       run:
         working-directory: terraform
+
+    # ⬇⬇⬇  AÑADE ESTO
+    env:
+      TF_IN_AUTOMATION: "true"
+      TF_INPUT: "0"
+      TF_VAR_my_ip_cidr: ${{ secrets.MY_IP_CIDR }}
+      TF_VAR_key_pair_name: ${{ secrets.KEY_PAIR_NAME }}
+      TF_VAR_alarm_email: ${{ secrets.ALARM_EMAIL }}
+      TF_VAR_aws_region: us-east-1
+      TF_VAR_instance_type: t3.micro
+
+      # si usas backend S3, mantén también estas (ajústalas a tu repo)
+      TF_STATE_BUCKET: matiaslb14-tfstate-ue1
+      TF_STATE_KEY: cloud-security/terraform.tfstate
+      TF_LOCK_TABLE: matiaslb14-terraform-locks
+      AWS_REGION: us-east-1
 
     steps:
       - name: Checkout repo
@@ -41,16 +52,17 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: terraform init
-        env:
-          TF_IN_AUTOMATION: "true"
-          TF_INPUT: "0"
-        run: terraform init -no-color -input=false -reconfigure
+      # Si usas backend S3 via flags, reconfigura:
+      - name: Terraform Init (S3 backend)
+        run: |
+          terraform init -no-color -input=false -reconfigure \
+            -backend-config="bucket=$TF_STATE_BUCKET" \
+            -backend-config="key=$TF_STATE_KEY" \
+            -backend-config="region=$AWS_REGION" \
+            -backend-config="dynamodb_table=$TF_LOCK_TABLE" \
+            -backend-config="encrypt=true"
 
       - name: terraform destroy
-        env:
-          TF_IN_AUTOMATION: "true"
-          TF_INPUT: "0"
-        run: terraform destroy -no-color -auto-approve
+        run: terraform destroy -no-color -input=false -auto-approve
