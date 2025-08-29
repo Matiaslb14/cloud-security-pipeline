@@ -9,27 +9,32 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-# Dirección IP pública del administrador (con /32 al final)
+# Tu IP pública en formato CIDR /32 (ej: 181.226.xxx.xxx/32)
 variable "my_ip_cidr" {
-  description = "Tu IP pública con máscara /32 (ejemplo: 181.226.xxx.xxx/32)"
+  description = "Tu IP pública con máscara /32"
   type        = string
+  validation {
+    condition     = can(regex("\\/32$", var.my_ip_cidr))
+    error_message = "my_ip_cidr debe terminar en /32, por ejemplo: 181.226.xxx.xxx/32"
+  }
 }
 
-# Nombre del par de llaves (key pair) que usarás para acceder por SSH
+# Nombre del key pair (debe existir en la región)
 variable "key_pair_name" {
   description = "Nombre del key pair de AWS"
   type        = string
 }
 
-# Correo electrónico que recibirá alertas de CloudWatch (opcional)
+# Email para alertas (opcional, por ahora no se usa)
 variable "alarm_email" {
-  description = "Email para recibir alertas de CloudWatch"
+  description = "Email para recibir alertas de CloudWatch (opcional)"
   type        = string
+  default     = ""
 }
 
-# Tipo de instancia (t3.micro suele ser Free Tier en cuentas nuevas)
+# Tipo de instancia EC2 (free-tier friendly)
 variable "instance_type" {
   description = "Tipo de instancia EC2 a lanzar"
   type        = string
-  default     = "t2.micro"
+  default     = "t2.micro"   # 1 vCPU, evita problemas de cuota
 }
