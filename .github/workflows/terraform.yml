@@ -3,14 +3,14 @@ name: Terraform Pipeline
 on:
   push:
     branches: [ main ]
-    # Evita ejecutar el workflow si SOLO cambian estos paths
+    # No ejecuta si solo cambian estos paths
     paths-ignore:
       - 'README.md'
       - 'docs/**'
-  # Siempre puedes lanzarlo manualmente si quieres
+  # Puedes lanzarlo manual si quieres
   workflow_dispatch: {}
 
-# Evita carreras: si hay un commit nuevo, cancela el run anterior
+# Evita carreras
 concurrency:
   group: terraform-${{ github.ref }}
   cancel-in-progress: true
@@ -47,7 +47,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.TF_VAR_aws_region }}
 
       - name: Terraform Init
         run: terraform init -no-color
