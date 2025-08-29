@@ -100,18 +100,13 @@ CloudWatch alarms
 
 SSM Session Manager & SSH-less ops
 
+<h2>Demo (Screenshots)</h2>
 
-## Demo (Screenshots)
+<h3>Nginx landing</h3>
+<img src="docs/nginx-landing.png" alt="Nginx landing" width="900">
 
+<h3>EC2 instance running</h3>
+<img src="docs/ec2-running.png" alt="EC2 running" width="900">
 
-### Nginx landing
-![Nginx landing](./docs/nginx-landing.png)
-
-
-### EC2 instance running
-![EC2 running](./docs/ec2-running.png)
-
-
-### GitHub Actions (apply)
-![Pipeline green](./docs/actions-apply-green.png)
-
+<h3>GitHub Actions (apply)</h3>
+<img src="docs/actions-apply-green.png" alt="Pipeline green" width="900">
