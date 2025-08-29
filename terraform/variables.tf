@@ -36,5 +36,5 @@ variable "alarm_email" {
 variable "instance_type" {
   description = "Tipo de instancia EC2 a lanzar"
   type        = string
-  default     = "t2.micro"   # 1 vCPU, evita problemas de cuota
+  default     = "t3.micro"   # 1 vCPU, evita problemas de cuota
 }
