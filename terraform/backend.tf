@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "tf-state-<TU-BUCKET-UNICO>"
-    key            = "cloud-security-pipeline/infra.tfstate"
+    bucket         = "matiaslb14-tfstate-use1"   # <-- usa el nombre real que creaste
+    key            = "cloud-security-pipeline/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraform-locks"
     encrypt        = true
+    # dynamodb_table = "terraform-locks"         # si creaste la tabla
   }
 }
