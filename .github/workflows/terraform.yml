@@ -28,7 +28,7 @@ jobs:
       TF_VAR_key_pair_name: ${{ secrets.KEY_PAIR_NAME }}
       TF_VAR_alarm_email: ${{ secrets.ALARM_EMAIL }}
       TF_VAR_aws_region: us-east-1
-      TF_VAR_instance_type: t2.micro 
+      TF_VAR_instance_type: t3.micro 
 
     defaults:
       run:
