@@ -103,7 +103,7 @@ SSM Session Manager & SSH-less ops
 ## Demo (Screenshots)
 
 ### Nginx landing
-![Nginx landing](docs/images/nginx-ok.png)
+![Nginx landing](docs/images/nginx-landing.png)
 
 ### GitHub Actions (apply)
 ![Pipeline green](docs/images/actions-apply-green.png)
@@ -113,4 +113,5 @@ SSM Session Manager & SSH-less ops
 
 ### Destroy workflow
 ![Destroy green](docs/images/destroy-green.png)
+
 
