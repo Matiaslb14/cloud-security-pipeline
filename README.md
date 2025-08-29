@@ -99,3 +99,5 @@ HTTPS with ACM/ALB
 CloudWatch alarms
 
 SSM Session Manager & SSH-less ops
+
+<img width="1195" height="813" alt="image" src="https://github.com/user-attachments/assets/9b21e1ce-ef3b-4d59-989a-3c0592628e12" />
