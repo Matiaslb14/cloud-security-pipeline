@@ -2,12 +2,11 @@ name: Terraform Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
-# Evita carreras: si empujas un commit nuevo, cancela el run anterior
+# evita carreras: si hay un commit nuevo, cancela el run anterior
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: terraform-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -16,14 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
-    # Pasa las variables TF desde los Secrets y desactiva entrada interactiva
+    # variables para Terraform y CI sin entrada interactiva
     env:
       TF_IN_AUTOMATION: true
       TF_INPUT: 0
-      TF_VAR_my_ip_cidr: ${{ secrets.MY_IP_CIDR }}          # ej: 181.226.x.x/32
-      TF_VAR_key_pair_name: ${{ secrets.KEY_PAIR_NAME }}    # ej: "mati-key"
-      TF_VAR_alarm_email: ${{ secrets.ALARM_EMAIL }}        # si no la usas aún, puedes quitarla
-      TF_VAR_aws_region: us-east-1                          # opcional (ya tienes default en variables.tf)
+      TF_VAR_my_ip_cidr: ${{ secrets.MY_IP_CIDR }}          # ej: 181.226.xxx.xxx/32
+      TF_VAR_key_pair_name: ${{ secrets.KEY_PAIR_NAME }}    # nombre del key pair (p.e. "mati-key")
+      TF_VAR_alarm_email: ${{ secrets.ALARM_EMAIL }}        # opcional si no la usas
+      TF_VAR_aws_region: us-east-1                          # opcional (tienes default en variables.tf)
 
     defaults:
       run:
@@ -43,7 +42,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  # región para STS; tu provider usa var.aws_region
+          aws-region: us-east-1
 
       - name: Terraform Init
         run: terraform init -no-color
