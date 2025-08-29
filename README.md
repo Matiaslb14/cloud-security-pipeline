@@ -103,7 +103,7 @@ SSM Session Manager & SSH-less ops
 ## Demo (Screenshots)
 
 ### Nginx landing
-![Nginx landing](docs/images/nginx-landing.png)
+![Nginx landing] (https://raw.githubusercontent.com/Matiaslb14/cloud-security-pipeline/main/docs/images/nginx-landing.png)
 
 ### GitHub Actions (apply)
 ![Pipeline green](docs/images/actions-apply-green.png)
@@ -113,5 +113,6 @@ SSM Session Manager & SSH-less ops
 
 ### Destroy workflow
 ![Destroy green](docs/images/destroy-green.png)
+
 
 
