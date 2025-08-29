@@ -103,15 +103,10 @@ SSM Session Manager & SSH-less ops
 ## Demo (Screenshots)
 
 ### Nginx landing
-![Nginx landing](docs/nginx-landing.png)
+![Nginx landing](./docs/nginx-landing.png)
 
 ### EC2 instance running
-![EC2 running](docs/ec2-running.png)
+![EC2 running](./docs/ec2-running.png)
 
 ### GitHub Actions (apply)
-![Pipeline green](docs/actions-apply-green.png)
-
-
-
-
-
+![Pipeline green](./docs/actions-apply-green.png)
