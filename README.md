@@ -108,11 +108,9 @@ SSM Session Manager & SSH-less ops
 ### GitHub Actions (apply)
 ![Pipeline green](docs/images/actions-apply-green.png)
 
-### Terraform outputs
-![Terraform outputs](docs/images/terraform-outputs.png)
-
 ### EC2 instance running
 ![EC2 running](docs/images/ec2-running.png)
 
 ### Destroy workflow
 ![Destroy green](docs/images/destroy-green.png)
+
