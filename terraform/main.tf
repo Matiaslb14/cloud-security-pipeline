@@ -20,6 +20,39 @@ data "aws_subnets" "default" {
 }
 
 ########################################
+# AMI Ubuntu 22.04 (elige x86_64 o arm64 según el tipo)
+########################################
+locals {
+  # Si el tipo de instancia empieza con t4g. => ARM (Graviton)
+  is_arm = can(regex("^t4g\\.", var.instance_type))
+  arch   = local.is_arm ? "arm64" : "x86_64"
+}
+
+# Canonical (Ubuntu) owner ID: 099720109477
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"]
+
+  filter {
+    name   = "name"
+    # Ejemplos de nombres de Canonical:
+    # ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-x86_64-server-*
+    # ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-arm64-server-*
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-${local.arch}-server-*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = [local.arch]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+########################################
 # Security Group: SSH solo tu IP + HTTP público
 ########################################
 resource "aws_security_group" "web_sg" {
@@ -40,7 +73,7 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = [var.my_ip_cidr]      # ej: 181.226.x.x/32
   }
 
-  # HTTP PÚBLICO (si quieres, cámbialo por un CIDR más restringido)
+  # HTTP PÚBLICO (ajusta si quieres restringir)
   ingress {
     description = "HTTP"
     from_port   = 80
@@ -64,8 +97,8 @@ resource "aws_security_group" "web_sg" {
 # EC2 (Ubuntu 22.04 LTS) + Nginx
 ########################################
 resource "aws_instance" "vm" {
-  ami                         = "ami-08c40ec9ead489470" # Ubuntu 22.04 LTS (us-east-1)
-  instance_type               = "t2.micro"
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = var.instance_type         # e.g. "t3.micro" (o "t4g.micro" si usas ARM)
   key_name                    = var.key_pair_name
   subnet_id                   = data.aws_subnets.default.ids[0]
   associate_public_ip_address = true
