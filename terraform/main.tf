@@ -2,13 +2,12 @@
 # Provider
 ########################################
 provider "aws" {
-  region = var.aws_region            # usa la variable, no un literal
+  region = var.aws_region
 }
 
 ########################################
 # VPC/Subred por defecto
 ########################################
-# Si tu cuenta tiene VPC por defecto, la usamos
 data "aws_vpc" "default" {
   default = true
 }
@@ -24,16 +23,20 @@ data "aws_subnets" "default" {
 # Security Group: solo SSH desde tu IP
 ########################################
 resource "aws_security_group" "ssh_sg" {
-  name        = "ssh-only"
+  name_prefix = "ssh-only-"                      # <- evita nombre duplicado
   description = "Allow SSH only from my IP (22/tcp)"
   vpc_id      = data.aws_vpc.default.id
+
+  lifecycle {
+    create_before_destroy = true
+  }
 
   ingress {
     description = "SSH from my IP"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.my_ip_cidr]   # ej: 181.226.x.x/32
+    cidr_blocks = [var.my_ip_cidr]               # ej: 181.226.x.x/32
   }
 
   egress {
