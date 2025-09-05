@@ -100,4 +100,12 @@ CloudWatch alarms
 
 SSM Session Manager & SSH-less ops
 
+## Evidence
+
+![Actions Apply Green](docs/actions-apply-green.png)
+![EC2 Running](docs/ec2-running.png)
+![Nginx Landing](docs/nginx-landing.png)
+
+
+
 
