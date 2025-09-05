@@ -100,11 +100,21 @@ CloudWatch alarms
 
 SSM Session Manager & SSH-less ops
 
-## Evidence
+## 📸 Evidence
 
-![Actions Apply Green](docs/actions-apply-green.png)
+### 1. Actions Apply – Terraform plan & apply successful  
+![Actions Apply](docs/actions-apply-green.png)
+
+---
+
+### 2. EC2 Instance Running – Instance created from Terraform  
 ![EC2 Running](docs/ec2-running.png)
+
+---
+
+### 3. Nginx Landing Page – Application accessible from public IP  
 ![Nginx Landing](docs/nginx-landing.png)
+
 
 
 
