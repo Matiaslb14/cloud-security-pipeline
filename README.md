@@ -61,7 +61,7 @@ instance_public_dns = ec2-xx-xx-xx-xx.compute-1.amazonaws.com
 Open: `http://<public-ip-or-dns>/`
 
 ## 🔑 SSH (from your machine)
-```bash
+
 ssh -i ~/.ssh/<your-key>.pem ubuntu@<public-dns>
 
 Ensure MY_IP_CIDR matches your current IP (/32).
@@ -99,4 +99,5 @@ HTTPS with ACM/ALB
 CloudWatch alarms
 
 SSM Session Manager & SSH-less ops
+
 
